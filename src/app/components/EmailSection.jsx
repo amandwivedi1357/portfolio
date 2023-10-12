@@ -1,10 +1,26 @@
-import React from "react";
+"use client"
+
+import React,{useRef, useState} from "react";
 import GithubIcon from "../../../public/github-icon.svg";
 import LinkedinIcon from "../../../public/linkedin-icon.svg";
 import Link from "next/link";
 import Image from "next/image";
+import { ToastContainer,toast } from "react-toastify";
+import emailjs from "@emailjs/browser"
+import './reacttoastify.css'
 
 const EmailSection = () => {
+  const form = useRef()
+  const sendmail = (e)=>{
+e.preventDefault()
+emailjs.sendForm('service_kbvy38p','template_gdud1gq',form.current,'kKLgu-eFEokmD3ilL')
+.then(()=>{
+  toast.success('message sent')
+},()=>{
+  toast.error('something is wrong')
+})
+e.target.reset()
+  }
   return (
     <section
       id="contact"
@@ -31,7 +47,7 @@ const EmailSection = () => {
         </div>
       </div>
       <div className="z-10">
-        <form className="flex flex-col">
+        <form ref={form} onSubmit={sendmail} className="flex flex-col">
           <div className="mb-6">
             <label
               htmlFor="email"
@@ -40,6 +56,7 @@ const EmailSection = () => {
               Your email
             </label>
             <input
+            name="email"
               type="email"
               id="email"
               required
@@ -47,7 +64,7 @@ const EmailSection = () => {
               placeholder="jacob@google.com"
             />
           </div>
-          <div className="mb-6">
+          {/* <div className="mb-6">
             <label
               htmlFor="subject"
               className="text-white block text-sm mb-2 font-medium"
@@ -55,13 +72,14 @@ const EmailSection = () => {
               Subject
             </label>
             <input
+              name="subject"
               type="text"
               id="subject"
               required
               className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
               placeholder="Just saying hi"
             />
-          </div>
+          </div> */}
           <div className="mb-6">
             <label
               htmlFor="message"
@@ -82,7 +100,14 @@ const EmailSection = () => {
           >
             Send Message
           </button>
+          
         </form>
+        <ToastContainer
+        position="top-center" 
+        hideProgressBar={true}
+        theme="light"
+        autoClose={2000}
+        />
       </div>
     </section>
   );
